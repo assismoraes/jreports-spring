@@ -19,7 +19,9 @@ public class Students {
 		students.add(createStudent("1672", "Mateus Severino"));
 		students.add(createStudent("7823", "Úrsula Pereira"));
 		students.add(createStudent("1902", "Karine Souza"));
-		students.add(createStudent("7819", "Wanderson Simeão"));		
+		students.add(createStudent("7819", "Wanderson Simeão"));
+		students.add(createStudent("1563", "Ana Furtado"));
+		students.add(createStudent("9928", "Fernanda Moreira"));		
 		
 		return students;
 	}

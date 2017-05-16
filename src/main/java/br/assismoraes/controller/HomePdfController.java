@@ -1,12 +1,20 @@
 package br.assismoraes.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.assismoraes.pdf.PDFGenerator;
 import br.assismoraes.repo.Students;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 @Controller
 @RequestMapping("/")
 public class HomePdfController {
@@ -18,13 +26,12 @@ public class HomePdfController {
 		return mv;
 	}
 	
-	@RequestMapping("/pdf")
-	public ModelAndView seePDF() throws JRException{
-		ModelAndView mv = new ModelAndView("students");
-		
+	@RequestMapping("/students.pdf")
+	public void seePDF(HttpServletResponse response) throws JRException, IOException{
 		Students students = new Students();
-		PDFGenerator.generate("src/main/java/students.jasper", "src/main/java/students.pdf", students.getStudents());
-		return mv;
+		JRBeanCollectionDataSource listOfObjects = new JRBeanCollectionDataSource(students.getStudents());
+		JasperPrint jasperPrint = JasperFillManager.fillReport("src/main/java/students.jasper", null, listOfObjects);
+		JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
 	}
 	
 	
